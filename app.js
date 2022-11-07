@@ -17,7 +17,7 @@ app.post('/', (req, res) => {
         accessToken: sfCred.AccessToken
     });
     //let records = [];
-    let query = `Select AccountId , Name, MailingStreet, MailingCity, MailingCountry,  Email, Birthdate FROM ${sfCred.SObject} where AccountId = '${sfCred.recordId}'`;
+    let query = `Select AccountId , Name, MailingStreet, MailingCity, MailingCountry,  Email, Birthdate FROM Contact where AccountId = '${sfCred.recordId}'`;
     conn.query(query, function (err, result) {
         if (err) { return console.error(err); }
         const PDFDocument = require('pdfkit');
