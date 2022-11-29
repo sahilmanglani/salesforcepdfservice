@@ -18,14 +18,14 @@ app.post('/', (req, res) => {
     });
     //let records = [];
     let query = `Select AccountId , Name, MailingStreet, MailingCity, MailingCountry,  Email, Birthdate FROM Contact where AccountId = '${sfCred.recordId}'`;
-    conn.query(query, function (err, result) {
+    conn.query(query, async function (err, result) {
         if (err) { return console.error(err); }
         const PDFDocument = require('pdfkit');
         const doc = new PDFDocument;
         if (result.records.length > 0) {
             createGridinPdf(doc, result.records);
             doc.end();
-            doc.pipe(fs.createWriteStream('attachment.pdf'));
+            await doc.pipe(fs.createWriteStream('attachment.pdf'));
             const pdfData = fs.readFileSync('./attachment.pdf').toString('base64');
             conn.sobject('Attachment').create({
                 ParentId: sfCred.recordId,
